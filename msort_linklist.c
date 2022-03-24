@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-
 typedef struct node_t{
 	int val;
 	struct node_t *next;
@@ -14,9 +12,8 @@ static void print_list(node_t*);
 static node_t *mergeTwoLists(node_t *left , node_t *right){
 	if(!left && !right)
 		return NULL;
-
 	node_t head,*prev = &head;
-
+	
 	while(left && right){
 		if(left->val >= right->val){
 			prev->next = right;
@@ -27,37 +24,29 @@ static node_t *mergeTwoLists(node_t *left , node_t *right){
 		}
 		prev = prev ->next;
 	}
-
 	if(left){
 		prev ->next = left;
 	}else{
 		prev->next = right;
 	}
-
-
 	return head.next;
 }
-
 
 static node_t *mergesort_list(node_t *head){
 	if(!head || !head ->next)
 		return head;
-
+	
 	node_t *slow = head;
-
 	if(head->next->next){
 		for(node_t *fast = head; fast && fast->next; fast = fast ->next->next)
 			slow = slow ->next;
 	}
-
 	node_t *mid = slow ->next;
 	slow->next = NULL;
 	node_t *left  = mergesort_list(head);
 	node_t *right = mergesort_list(mid);
-
 	print_list(left);
 	print_list(right);
-
 	return mergeTwoLists(left, right);	
 }
 
@@ -82,20 +71,15 @@ int main(){
 		node->next = prev;
 		prev = node;
 	}
-
 	/* print */
 	puts("\nOriginal List\n");
 	print_list(node);
-	
-	
 	/* sort */
 	node = mergesort_list(node);
 	//node = mergeTwoLists(node, NULL);
-
 	/* print */
 	puts("\nSorted List\n");
-	print_list(node);
-	
+	print_list(node);	
 	free(node);
 	return 0;
 }
